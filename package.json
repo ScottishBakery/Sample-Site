@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@glance-networks/agent-plugin": "^1.2.0",
     "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "carbon-components-svelte": "^0.81.2"
   }
 }
