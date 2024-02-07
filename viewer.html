@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewer Concept</title>
+    <link rel="stylesheet" href="//www.myglance.net/cobrowse/CobrowseViewerFrame.css" type="text/css"/>
+    <style>
+        body {
+            background-color: lightskyblue;
+        }
+        #error-message {
+            color:red;
+        }
+        #viewer-container {
+            position:absolute;
+            min-width: 100%;
+            min-height: 100%;
+            display: flex;
+        }
+    </style>
+    <script src="//cdn1.myglance.net/cobrowse/js/MooTools-More-1.5.1-compressed.js"></script>
+    <script src="https://dw3.myglance.org/vt/AgentViewer.js"></script>
+    <script>
+        function join() {
+            var url = new URL(window.location.href);
+            GLANCE.Agent.webserver = url.origin;
+
+            var qparams = url.searchParams;
+            var groupId = qparams.get("groupid");
+            if (!groupId)
+                throw new Error("no groupId");
+            var sessionKey = qparams.get("sessionkey");
+            if (!sessionKey)
+                // show form
+                throw new Error("no sessionKey");
+
+            var viewer = new GLANCE.Agent.Viewer(groupId, "viewer-container");
+
+            viewer.joinSession(sessionKey)
+             .catch(err => document.getElementById("error-message").innerText = err.toString());
+        }
+
+        // window.addEventListener("load", join);
+    </script>
+    <script>
+        const joinButton = document.getElementById('join');
+        const sessionKey = document.getElementById('session-key').value;
+        joinButton.addEventListener('click', () => join())
+    </script>
+</head>
+<body>
+    <h1>Viewer Concept</h1>
+    <form>
+        <input type="text" id="session-key">
+        <button id="join">Join</button>
+    </form>
+    <div class="error-message"></div>
+    <div class="viewer-container"></div>
+</body>
+</html>
